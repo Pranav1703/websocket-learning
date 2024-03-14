@@ -31,14 +31,14 @@ wsServer.on("connection",(ws)=>{
     setTimeout(()=>{
         
         ws.send("connection closed safely.")
-        console.log("first:",ws.readyState.toString())
+        console.log("before:",ws.readyState.toString())
         if(ws.readyState === ws.OPEN){
             
             ws.close(1000,"connection closed safely.");
-            console.log("second:",ws.readyState.toString())
+            
         }
         
-        console.log("third",ws.readyState.toString())
+        console.log("after",ws.readyState.toString())
     },5000)
 
     let sec:number = 0
@@ -58,7 +58,7 @@ wsServer.on("connection",(ws)=>{
     
    
     ws.on("close",(code,reason)=>{
-        console.log(`connection closed. CODE ${code} --- "${reason}"`)
+        console.log(`connection closed. socket status ${ws.readyState}. CODE ${code} --- "${reason}"`)
     })
     
 })

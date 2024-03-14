@@ -1,9 +1,10 @@
-import { useState ,useEffect} from "react";
-
+import { useState } from "react";
+import "./styles/app.css"
 
 function App() {
   
-  const [data,setData] = useState<string>()
+  const [text,setText] = useState<string>()
+
 
   const soc = new WebSocket("ws://localhost:3000");
 
@@ -17,17 +18,13 @@ function App() {
     
   })
   
-  
-  useEffect(() => {
-    
-
-    
-  }, [])
-  
+ 
 
   return (
     <>
-      {data}
+      <div className="main">
+          <textarea cols={105} rows={32} value={text} onChange={(e)=>{setText(e.target.value);console.log(text) } }></textarea>
+      </div>
     </>
   )
 }
