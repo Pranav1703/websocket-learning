@@ -12,53 +12,59 @@ wsServer.on("connection",(ws)=>{
         const msg = data.toString()    
         console.log(msg);
         
+
         if(msg==="close"){
            
             ws.send("connection closed safely.")
-            console.log("first:",ws.readyState.toString())
+            console.log("before:",ws.readyState.toString())
             if(ws.readyState === ws.OPEN){
+    
+                ws.close(1000,"closed safely.");
+
                 
-                ws.close(1000,"connection closed safely.");
-                console.log("second:",ws.readyState.toString())
             }
             
-            console.log("third",ws.readyState.toString())
+            console.log("after",ws.readyState.toString())
 
         }
-
+        
     })
-    
-    setTimeout(()=>{
-        
-        ws.send("connection closed safely.")
-        console.log("before:",ws.readyState.toString())
-        if(ws.readyState === ws.OPEN){
-            
-            ws.close(1000,"connection closed safely.");
-            
-        }
-        
-        console.log("after",ws.readyState.toString())
-    },5000)
+
+
 
     let sec:number = 0
     const sendTimeInterval = setInterval(() => {
-        
-        if (ws.readyState === ws.OPEN) {
             
-            
-            ws.send(`seconds ${sec}`);
-      
-            sec++
-            
+        if (ws.readyState === ws.OPEN ) {
+                
+                
+            ws.send(`seconds ${sec} socket state ${ws.readyState}`);
+            sec++;
+            if(sec===5) ws.close(1000,"connection closed")
+                
         } else {
+            
+            console.log("clear interval triggered")
             clearInterval(sendTimeInterval); // Stoping data transfer if connection is closed
         }
     }, 1000);
+
     
    
     ws.on("close",(code,reason)=>{
         console.log(`connection closed. socket status ${ws.readyState}. CODE ${code} --- "${reason}"`)
     })
+
+    ws.onclose = ()=>{
+        console.log("closed------------------------------")
+
+    }
+
+    ws.onopen = ()=>{
+        console.log("opened-------------------------------")
+    }
     
 })
+
+
+

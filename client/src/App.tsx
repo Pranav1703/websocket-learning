@@ -10,20 +10,33 @@ function App() {
 
   soc.addEventListener("open",()=>{
     console.log("connected to server")
-    soc.send("hellodfkhbgldhbghljkrdbgldkgbsdal")
+    soc.send("hello")
   })
 
   soc.addEventListener("message",(data)=>{
-    console.log(data)
+    console.log(data.data)
     
   })
-  
+  soc.onclose = ()=>{
+    console.log("connection closed. client side state = ",soc.readyState)
+  }
+
+
+
+  const disconnetHandler = ()=>{
+    soc.close(1000,"closed safely")
+
+  }
  
 
   return (
     <>
       <div className="main">
-          <textarea cols={105} rows={32} value={text} onChange={(e)=>{setText(e.target.value);console.log(text) } }></textarea>
+          <button onClick={disconnetHandler}>disconnect</button>
+          <textarea cols={105} rows={32} value={text} onChange={(e)=>{ 
+            setText(e.target.value);console.log(text)
+          }}>
+          </textarea>
       </div>
     </>
   )
